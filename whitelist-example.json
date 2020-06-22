@@ -1,0 +1,7 @@
+{
+  "name": "ip-restriction",
+  "config.whitelist": [
+      "192.0.2.0/25",
+      "192.0.2.128/25"
+  ]
+}
