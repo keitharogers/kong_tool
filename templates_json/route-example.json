@@ -1,0 +1,23 @@
+{
+  "name": "example-route-12345",
+  "hosts": [
+    "example.com",
+    "example2.com"
+  ],
+  "paths": [
+    "/foo",
+    "/bar"
+  ],
+  "methods": [
+    "GET",
+    "POST"
+  ],
+  "strip_path": "true",
+  "protocols": [
+    "https"
+  ],
+  "tags": [
+    "dev",
+    "app1"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "example-service-12345",
+  "retries": "5",
+  "protocol": "https",
+  "host": "example-upstream-host",
+  "port": "443",
+  "path": "/foo",
+  "tags": [
+    "dev",
+    "app"
+  ]
+}
