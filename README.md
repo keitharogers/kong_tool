@@ -32,3 +32,7 @@ Optionally, if you wish to add a plugin to a service, you can do so by running t
 
 `./kongtool.py --add-plugins example-service iprestriction-example.json`
 
+## Other useful information
+The Kong API documentation has been invaluable whilst creating this tool. You can find it below:
+
+https://docs.konghq.com/2.0.x/admin-api/
