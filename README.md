@@ -13,6 +13,10 @@ There are some small API differences between Kong 1.x and 2.x versions but I wan
 
 As a result of attempting to keep compatibility between the versions, I opted to use API endpoints/methods that were present in both the Kong 1.3 and Kong 2.0 API versions. This means that the code may not be as optimal as it could have been had I only wanted it to work with Kong 2.0.
 
+## Requirements
+
+This has been tested with Python 3.8.
+
 ## Usage
 To get started, point this tool at Kong's admin API by editing `config.ini` to give it the correct URL to use.
 

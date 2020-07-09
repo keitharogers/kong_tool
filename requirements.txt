@@ -1,4 +1,4 @@
-requests
-configparser
+requests==2.19.1
+configparser==5.0.0
 argparse
-jsonschema
+jsonschema==3.2.0
