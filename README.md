@@ -1,5 +1,5 @@
 # Introduction
-I created Kong Tool to satisfy a requirement that a client had. Although there are other tools to manage Kong, such as DecK, I wanted something a little simpler and something that could potentially be used in a CI/CD pipeline at a later date.
+I created Kong Tool to satisfy a requirement that a client had. Although there are other tools to manage Kong, I wanted to create something a little more bespoke for various reasons I won't go into here.
 
 ## What does this tool do?
 This tool can be used to do the following:
