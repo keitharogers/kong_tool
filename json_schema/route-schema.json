@@ -1,0 +1,19 @@
+{
+  "type" : "object",
+  "properties" : {
+      "name" : {"type" : "string"},
+      "protocols": {"type" : ["array", "string"]},
+      "methods": {"type" : ["array", "string"]},
+      "hosts" : {"type" : ["array", "string"]},
+      "paths": {"type" : ["array", "string"]},
+      "headers": {"type" : ["array", "string"]},
+      "https_redirect_status_code": {"type" : "number"},
+      "regex_priority": {"type" : "number"},
+      "strip_path": {"type" : "string"},
+      "preserve_host": {"type" : "string"},
+      "snis": {"type" : ["array", "string"]},
+      "sources": {"type" : ["array", "string"]},
+      "destinations": {"type" : ["array", "string"]},
+      "tags": {"type" : ["array", "string"]}
+  }
+}

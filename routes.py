@@ -1,4 +1,5 @@
 import json
+from jsonschema import validate
 from kongrequests import make_request
 from services import get_service_id_from_name
 
@@ -16,12 +17,23 @@ def get_route_id_from_name(route_name):
 
 
 def create_route_on_service(service_name, route_json_filename):
-    service_id = get_service_id_from_name(service_name)
+    if get_service_id_from_name(service_name) is not None:
+        service_id = get_service_id_from_name(service_name)
+        api = '/services/' + service_id + '/routes'
+    else:
+        print("Service doesn't exist, please check name...")
+        exit(1)
 
-    api = '/services/' + service_id + '/routes'
+    # Open JSON schema for route
+    with open('json_schema/route-schema.json') as route_schema:
+        schema = json.load(route_schema)
 
+    # Open JSON file for new or existing route as defined by user
     with open(route_json_filename) as json_file:
         payload = json.load(json_file)
+
+    # Validate user JSON file against schema
+    validate(instance=payload, schema=schema)
 
     create_route = make_request('POST', api, payload)
 
@@ -32,9 +44,12 @@ def create_route_on_service(service_name, route_json_filename):
 
 
 def amend_route(route_name, route_json_filename):
-    route_id = get_route_id_from_name(route_name)
-
-    api = '/routes/' + route_id
+    if get_route_id_from_name(route_name) is not None:
+        route_id = get_route_id_from_name(route_name)
+        api = '/routes/' + route_id
+    else:
+        print("Route doesn't exist, please check name...")
+        exit(1)
 
     with open(route_json_filename) as json_file:
         payload = json.load(json_file)

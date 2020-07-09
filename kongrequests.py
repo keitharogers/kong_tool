@@ -1,4 +1,5 @@
 import requests
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import configparser
 
 
@@ -16,6 +17,7 @@ def make_request(method, api, params):
 
     if api_url_verify_cert == 'false':
         verify_cert = False
+        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
     elif api_url_verify_cert == 'true':
         verify_cert = True
     else:
@@ -42,3 +44,6 @@ def make_request(method, api, params):
         resp = requests.request(method, url + api, headers=headers, data=params, verify=verify_cert)
         if resp.status_code == 204:
             print('Deletion successful')
+        else:
+            return resp.json()
+
