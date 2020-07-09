@@ -14,6 +14,8 @@ There are some small API differences between Kong 1.x and 2.x versions but I wan
 As a result of attempting to keep compatibility between the versions, I opted to use API endpoints/methods that were present in both the Kong 1.3 and Kong 2.0 API versions. This means that the code may not be as optimal as it could have been had I only wanted it to work with Kong 2.0.
 
 ## Usage
+To get started, point this tool at Kong's admin API by editing `config.ini` to give it the correct URL to use.
+
 You can list out the help documentation by running `./kongtool -h` which will give you a list of options.
 
 When creating or amending resources in Kong, you'll need to present the Kong Tool with a JSON file to read and send as the payload to the API endpoint. I've put together a number of examples in the `templates_json` folder. So long as you follow the structure defined on the API page of the Kong API documentation, you should be good to go.
