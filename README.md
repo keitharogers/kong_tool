@@ -3,10 +3,9 @@ I created Kong Tool to satisfy a requirement that a client had. Although there a
 
 ## What does this tool do?
 This tool can be used to do the following:
-- Create, amend and list service endpoints
-- Create, amend and list routes
-- Create, amend and list plugins
-- Delete services and routes
+- Create, amend, list and delete service endpoints
+- Create, amend, list and delete routes
+- Create, amend, list and delete plugins
 
 ## Compatibility
 There are some small API differences between Kong 1.x and 2.x versions but I wanted it to be as compatible as possible. I have tested this with Kong 1.3 and Kong 2.0.

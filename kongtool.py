@@ -2,7 +2,7 @@
 
 import argparse
 
-from plugins import get_plugins, add_plugins, amend_plugin
+from plugins import get_plugins, add_plugins, amend_plugin, delete_plugin
 from services import create_service_endpoint, get_service_endpoint, get_all_service_endpoints, delete_service_by_id
 from routes import create_route_on_service, amend_route, get_routes_on_service, delete_route_by_id
 
@@ -27,9 +27,11 @@ parser.add_argument("--delete-route", nargs='+',
 parser.add_argument("--get-plugins",
                     help="--get-plugins SERVICE_NAME")
 parser.add_argument("--add-plugins", nargs='+',
-                    help="--add-plugins SERVICE_NAME JSON_FILENAME")
+                    help="--add-plugins SERVICE_NAME JSON_FILENAME SECOND_JSON_FILENAME (optional - ip restriction only)")
 parser.add_argument("--amend-plugin", nargs='+',
-                    help="--amend-plugin PLUGIN_ID JSON_FILENAME")
+                    help="--amend-plugin PLUGIN_ID JSON_FILENAME SECOND_JSON_FILENAME (optional - ip restriction only)")
+parser.add_argument("--delete-plugin", nargs='+',
+                    help="--delete-plugin PLUGIN_ID")
 args = parser.parse_args()
 
 
@@ -40,9 +42,11 @@ elif args.get_service_endpoint:
 elif args.get_plugins:
     get_plugins(args.get_plugins)
 elif args.add_plugins:
-    add_plugins(args.add_plugins[0], args.add_plugins[1])
+    add_plugins(args.add_plugins[0], args.add_plugins[1], args.add_plugins[2] if len(args.add_plugins) > 2 else None)
 elif args.amend_plugin:
-    amend_plugin(args.amend_plugin[0], args.amend_plugin[1])
+    amend_plugin(args.amend_plugin[0], args.amend_plugin[1], args.amend_plugin[2] if len(args.amend_plugin) > 2 else None)
+elif args.delete_plugin:
+    delete_plugin(args.delete_plugin[0])
 elif args.add_route_to_service:
     create_route_on_service(args.add_route_to_service[0], args.add_route_to_service[1])
 elif args.amend_route_on_service:

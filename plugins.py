@@ -23,7 +23,7 @@ def get_plugins(service_name):
     return json.dumps(plugins)
 
 
-def add_plugins(service_name, plugin_json_filename):
+def add_plugins(service_name, plugin_json_filename, ip_whitelist=None):
     service_id = get_service_id_from_name(service_name)
 
     if service_id is not None:
@@ -32,16 +32,37 @@ def add_plugins(service_name, plugin_json_filename):
         print('Service not found...')
         exit(1)
 
-    # Open JSON schema for service endpoint
-    with open('json_schema/plugin-schema.json') as plugin_schema:
-        schema = json.load(plugin_schema)
+    if ip_whitelist is None:
+        # Open JSON schema for service endpoint
+        with open('json_schema/plugin-schema.json') as plugin_schema:
+            schema = json.load(plugin_schema)
 
-    # Open JSON file for new or existing service endpoint as defined by user
-    with open(plugin_json_filename) as json_file:
-        payload = json.load(json_file)
+        # Open JSON file for new or existing service endpoint as defined by user
+        with open(plugin_json_filename) as json_file:
+            payload = json.load(json_file)
 
-    # Validate user JSON file against schema
-    validate(instance=payload, schema=schema)
+        # Validate user JSON file against schema
+        validate(instance=payload, schema=schema)
+    else:
+        with open('json_schema/plugin-schema.json') as plugin_schema:
+            schema = json.load(plugin_schema)
+
+        with open(plugin_json_filename) as json_file1:
+            json1_file = json.load(json_file1)
+
+        with open(ip_whitelist) as json_file2:
+            json2_file = json.load(json_file2)
+
+        if "config.whitelist" in json1_file:
+            json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+        else:
+            print("Merging of JSON plugin files only supports the IP restriction plugin...")
+            exit(1)
+
+        payload = json1_file
+
+        # Validate user JSON file against schema
+        validate(instance=payload, schema=schema)
 
     add_request = make_request('POST', api, payload)
 
@@ -51,19 +72,40 @@ def add_plugins(service_name, plugin_json_filename):
     return add_request
 
 
-def amend_plugin(plugin_id, plugin_json_filename):
+def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None):
     api = '/plugins/' + plugin_id
 
-    # Open JSON schema for service endpoint
-    with open('json_schema/plugin-schema.json') as plugin_schema:
-        schema = json.load(plugin_schema)
+    if ip_whitelist is None:
+        # Open JSON schema for service endpoint
+        with open('json_schema/plugin-schema.json') as plugin_schema:
+            schema = json.load(plugin_schema)
 
-    # Open JSON file for new or existing service endpoint as defined by user
-    with open(plugin_json_filename) as json_file:
-        payload = json.load(json_file)
+        # Open JSON file for new or existing service endpoint as defined by user
+        with open(plugin_json_filename) as json_file:
+            payload = json.load(json_file)
 
-    # Validate user JSON file against schema
-    validate(instance=payload, schema=schema)
+        # Validate user JSON file against schema
+        validate(instance=payload, schema=schema)
+    else:
+        with open('json_schema/plugin-schema.json') as plugin_schema:
+            schema = json.load(plugin_schema)
+
+        with open(plugin_json_filename) as json_file1:
+            json1_file = json.load(json_file1)
+
+        with open(ip_whitelist) as json_file2:
+            json2_file = json.load(json_file2)
+
+        if "config.whitelist" in json1_file:
+            json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+        else:
+            print("Merging of JSON plugin files only supports the IP restriction plugin...")
+            exit(1)
+
+        payload = json1_file
+
+        # Validate user JSON file against schema
+        validate(instance=payload, schema=schema)
 
     amend_request = make_request('PATCH', api, payload)
 
@@ -72,4 +114,15 @@ def amend_plugin(plugin_id, plugin_json_filename):
 
     return amend_request
 
+
+def delete_plugin(plugin_id):
+    api = '/plugins/' + plugin_id
+
+    payload = {}
+
+    delete_plugin_with_id = make_request('DELETE', api, payload)
+
+    print(json.dumps(delete_plugin_with_id, indent=2))
+
+    return delete_plugin
 
