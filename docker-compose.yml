@@ -1,0 +1,7 @@
+version: '3'
+services:
+  kong_tool:
+    build: .
+    environment:
+      KONG_API_URL: $KONG_API_URL
+      ARGUMENT: $ARGUMENT

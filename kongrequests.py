@@ -1,4 +1,5 @@
 import requests
+from os import environ
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import configparser
 
@@ -7,7 +8,11 @@ def make_request(method, api, params):
     config = configparser.ConfigParser()
     config.read('config.ini')
 
-    api_url = config['Kong']['API_URL']
+    if environ.get('KONG_API_URL') is not None:
+        api_url = environ['KONG_API_URL']
+    else:
+        api_url = config['Kong']['API_URL']
+
     api_url_verify_cert = config['Kong']['API_VERIFY_CERTIFICATE']
     url = api_url
 
