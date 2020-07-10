@@ -122,7 +122,5 @@ def delete_plugin(plugin_id):
 
     delete_plugin_with_id = make_request('DELETE', api, payload)
 
-    print(json.dumps(delete_plugin_with_id, indent=2))
-
-    return delete_plugin
+    return delete_plugin_with_id
 
