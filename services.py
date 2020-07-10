@@ -82,6 +82,4 @@ def delete_service_by_id(service_id):
 
     delete_service = make_request('DELETE', api + service_id, payload)
 
-    print(json.dumps(delete_service, indent=2))
-
     return delete_service
