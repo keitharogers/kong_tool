@@ -45,5 +45,6 @@ def make_request(method, api, params):
         if resp.status_code == 204:
             print('Deletion successful')
         else:
+            print('Deletion not successful, object has dependencies still attached. Please delete these first.')
             return resp.json()
 

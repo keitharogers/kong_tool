@@ -17,7 +17,6 @@ def get_plugins(service_name):
 
     plugins = make_request('GET', api, payload)
 
-    print("\nDisplaying plugin(s) for service...\n")
     print(json.dumps(plugins, indent=2))
 
     return json.dumps(plugins)
@@ -66,7 +65,6 @@ def add_plugins(service_name, plugin_json_filename, ip_whitelist=None):
 
     add_request = make_request('POST', api, payload)
 
-    print("\nAdding plugin(s) for service...\n")
     print(json.dumps(add_request, indent=2))
 
     return add_request
@@ -109,7 +107,6 @@ def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None):
 
     amend_request = make_request('PATCH', api, payload)
 
-    print("\nAmending plugin(s)...\n")
     print(json.dumps(amend_request, indent=2))
 
     return amend_request

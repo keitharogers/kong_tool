@@ -37,7 +37,6 @@ def create_route_on_service(service_name, route_json_filename):
 
     create_route = make_request('POST', api, payload)
 
-    print('\nCreating route on service endpoint...\n')
     print(json.dumps(create_route, indent=2))
 
     return create_route
@@ -56,7 +55,6 @@ def amend_route(route_name, route_json_filename):
 
     create_route = make_request('PATCH', api, payload)
 
-    print('\nAmending route on service endpoint...\n')
     print(json.dumps(create_route, indent=2))
 
     return create_route
@@ -71,7 +69,6 @@ def get_routes_on_service(service_name):
 
     service_routes = make_request('GET', api, payload)
 
-    print('\nRetrieving routes attached to service...\n')
     print(json.dumps(service_routes, indent=2))
 
     return service_routes

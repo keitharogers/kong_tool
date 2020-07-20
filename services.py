@@ -34,13 +34,10 @@ def create_service_endpoint(service_name, service_json_filename):
     validate(instance=payload, schema=schema)
 
     if api == '/services':
-        msg = "\nCreating service endpoint...\n"
         create_service = make_request('POST', api, payload)
     else:
-        msg = "\nAmending service endpoint...\n"
         create_service = make_request('PUT', api, payload)
 
-    print(msg)
     print(json.dumps(create_service, indent=2))
 
     return create_service
@@ -58,7 +55,6 @@ def get_service_endpoint(service_name):
 
     service_endpoint = make_request('GET', api + service_id, payload)
 
-    print('\nRetrieving service endpoint...\n')
     print(json.dumps(service_endpoint, indent=2))
 
     return service_endpoint
@@ -70,7 +66,6 @@ def get_all_service_endpoints():
 
     service_endpoints = make_request('GET', api, payload)
 
-    print('\nRetrieving all service endpoints...\n')
     print(json.dumps(service_endpoints, indent=2))
 
     return service_endpoints
