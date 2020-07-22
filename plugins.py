@@ -22,7 +22,7 @@ def get_plugins(service_name):
     return json.dumps(plugins)
 
 
-def add_plugins(service_name, plugin_json_filename, ip_whitelist=None):
+def add_plugins(service_name, plugin_json_filename, ip_whitelist=None, ip_whitelist_2=None, ip_whitelist_3=None):
     service_id = get_service_id_from_name(service_name)
 
     if service_id is not None:
@@ -52,8 +52,23 @@ def add_plugins(service_name, plugin_json_filename, ip_whitelist=None):
         with open(ip_whitelist) as json_file2:
             json2_file = json.load(json_file2)
 
-        if "config.whitelist" in json1_file:
+        if ip_whitelist_2 is not None:
+            with open(ip_whitelist_2) as json_file3:
+                json3_file = json.load(json_file3)
+
+        if ip_whitelist_3 is not None:
+            with open(ip_whitelist_3) as json_file4:
+                json4_file = json.load(json_file4)
+
+        if "config.whitelist" in json1_file and ip_whitelist_2 is None:
             json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+        elif "config.whitelist" in json1_file and ip_whitelist_3 is None:
+            json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+            json1_file["config.whitelist"].extend(json3_file["config.whitelist"])
+        elif "config.whitelist" in json1_file and ip_whitelist_3 is not None:
+            json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+            json1_file["config.whitelist"].extend(json3_file["config.whitelist"])
+            json1_file["config.whitelist"].extend(json4_file["config.whitelist"])
         else:
             print("Merging of JSON plugin files only supports the IP restriction plugin...")
             exit(1)
@@ -70,7 +85,7 @@ def add_plugins(service_name, plugin_json_filename, ip_whitelist=None):
     return add_request
 
 
-def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None):
+def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None, ip_whitelist_2=None, ip_whitelist_3=None):
     api = '/plugins/' + plugin_id
 
     if ip_whitelist is None:
@@ -94,8 +109,23 @@ def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None):
         with open(ip_whitelist) as json_file2:
             json2_file = json.load(json_file2)
 
-        if "config.whitelist" in json1_file:
+        if ip_whitelist_2 is not None:
+            with open(ip_whitelist_2) as json_file3:
+                json3_file = json.load(json_file3)
+
+        if ip_whitelist_3 is not None:
+            with open(ip_whitelist_3) as json_file4:
+                json4_file = json.load(json_file4)
+
+        if "config.whitelist" in json1_file and ip_whitelist_2 is None:
             json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+        elif "config.whitelist" in json1_file and ip_whitelist_3 is None:
+            json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+            json1_file["config.whitelist"].extend(json3_file["config.whitelist"])
+        elif "config.whitelist" in json1_file and ip_whitelist_3 is not None:
+            json1_file["config.whitelist"].extend(json2_file["config.whitelist"])
+            json1_file["config.whitelist"].extend(json3_file["config.whitelist"])
+            json1_file["config.whitelist"].extend(json4_file["config.whitelist"])
         else:
             print("Merging of JSON plugin files only supports the IP restriction plugin...")
             exit(1)

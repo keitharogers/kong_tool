@@ -42,9 +42,13 @@ elif args.get_service_endpoint:
 elif args.get_plugins:
     get_plugins(args.get_plugins)
 elif args.add_plugins:
-    add_plugins(args.add_plugins[0], args.add_plugins[1], args.add_plugins[2] if len(args.add_plugins) > 2 else None)
+    add_plugins(args.add_plugins[0], args.add_plugins[1], args.add_plugins[2] if len(args.add_plugins) > 2 else None,
+                args.add_plugins[3] if len(args.add_plugins) > 3 else None,
+                args.add_plugins[4] if len(args.add_plugins) > 4 else None)
 elif args.amend_plugin:
-    amend_plugin(args.amend_plugin[0], args.amend_plugin[1], args.amend_plugin[2] if len(args.amend_plugin) > 2 else None)
+    amend_plugin(args.amend_plugin[0], args.amend_plugin[1], args.amend_plugin[2] if len(args.amend_plugin) > 2 else None,
+                 args.amend_plugin[3] if len(args.amend_plugin) > 3 else None,
+                 args.amend_plugin[4] if len(args.amend_plugin) > 4 else None)
 elif args.delete_plugin:
     delete_plugin(args.delete_plugin[0])
 elif args.add_route_to_service:
