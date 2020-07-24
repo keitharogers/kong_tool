@@ -5,6 +5,7 @@ import argparse
 from plugins import get_plugins, add_plugins, amend_plugin, delete_plugin
 from services import create_service_endpoint, get_service_endpoint, get_all_service_endpoints, delete_service_by_id
 from routes import create_route_on_service, amend_route, get_routes_on_service, delete_route_by_id
+from certs import add_ca_certificate, list_ca_certificates, retrieve_ca_certificate_by_id
 
 
 parser = argparse.ArgumentParser()
@@ -32,6 +33,9 @@ parser.add_argument("--amend-plugin", nargs='+',
                     help="--amend-plugin PLUGIN_ID JSON_FILENAME SECOND_JSON_FILENAME (optional - ip restriction only)")
 parser.add_argument("--delete-plugin", nargs='+',
                     help="--delete-plugin PLUGIN_ID")
+parser.add_argument("--list-ca-certificates", action='store_true', help="--list-ca-certificates")
+parser.add_argument("--add-ca-certificate", nargs='+', help="--add-ca-certificate JSON_FILENAME")
+parser.add_argument("--retrieve-ca-certificate", nargs='+', help="--retrieve-ca-certificate CA_CERTIFICATE_ID")
 args = parser.parse_args()
 
 
@@ -63,3 +67,10 @@ elif args.delete_service:
     delete_service_by_id(args.delete_service[0])
 elif args.get_all_service_endpoints:
     get_all_service_endpoints()
+elif args.list_ca_certificates:
+    list_ca_certificates()
+elif args.add_ca_certificate:
+    add_ca_certificate(args.add_ca_certificate[0])
+elif args.retrieve_ca_certificate:
+    retrieve_ca_certificate_by_id(args.retrieve_ca_certificate[0])
+

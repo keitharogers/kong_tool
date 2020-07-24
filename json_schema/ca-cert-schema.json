@@ -1,0 +1,7 @@
+{
+  "type" : "object",
+  "properties" : {
+      "cert": {"type" : "string"},
+      "tags": {"type" : ["array", "string"]}
+  }
+}
