@@ -137,7 +137,6 @@ def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None, ip_whitelis
 
     amend_request = make_request('PATCH', api, payload)
 
-    print(json.dumps(payload))
     print(json.dumps(amend_request, indent=2))
 
     return amend_request
