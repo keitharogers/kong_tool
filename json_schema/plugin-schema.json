@@ -3,7 +3,7 @@
   "properties" : {
       "name" : {"type" : "string"},
       "protocols": {"type" : "string"},
-      "enabled": {"type" : "string"},
+      "enabled": {"type" : "boolean"},
       "tags": {"type" : ["array", "string"]}
   }
 }

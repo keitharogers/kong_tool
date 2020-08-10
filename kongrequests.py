@@ -1,4 +1,5 @@
 import requests
+import json
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import configparser
 
@@ -12,7 +13,7 @@ def make_request(method, api, params):
     url = api_url
 
     headers = {
-        'cache-control': "no-cache"
+        'Content-Type': 'application/json'
     }
 
     if api_url_verify_cert == 'false':
@@ -25,7 +26,7 @@ def make_request(method, api, params):
         exit(1)
 
     if (method == 'POST') or (method == 'PATCH') or (method == 'PUT'):
-        resp = requests.request(method, url + api, headers=headers, data=params, verify=verify_cert)
+        resp = requests.request(method, url + api, headers=headers, json=params, verify=verify_cert)
         if resp.status_code == 409:
             print('Object already exists please amend instead')
             exit(1)

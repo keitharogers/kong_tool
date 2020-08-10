@@ -9,7 +9,7 @@
       "headers": {"type" : ["array", "string"]},
       "https_redirect_status_code": {"type" : "number"},
       "regex_priority": {"type" : "number"},
-      "strip_path": {"type" : "string"},
+      "strip_path": {"type" : "boolean"},
       "preserve_host": {"type" : "string"},
       "snis": {"type" : ["array", "string"]},
       "sources": {"type" : ["array", "string"]},

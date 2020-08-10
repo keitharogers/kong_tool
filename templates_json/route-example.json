@@ -12,7 +12,7 @@
     "GET",
     "POST"
   ],
-  "strip_path": "true",
+  "strip_path": true,
   "protocols": [
     "https"
   ],

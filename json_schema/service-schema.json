@@ -6,7 +6,7 @@
       "protocol": {"type" : "string"},
       "host": {"type" : "string"},
       "port": {"type" : "number"},
-      "path": {"type" : "string"},
+      "path": {"type" : ["null", "string"]},
       "connect_timeout": {"type" : "number"},
       "write_timeout": {"type" : "number"},
       "read_timeout": {"type" : "number"},
