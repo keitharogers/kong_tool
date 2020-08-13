@@ -2,8 +2,8 @@
   "type" : "object",
   "properties" : {
       "name" : {"type" : "string"},
-      "protocols": {"type" : "string"},
+      "protocols": {"type" : ["string", "array", "null"]},
       "enabled": {"type" : "boolean"},
-      "tags": {"type" : ["array", "string"]}
+      "tags": {"type" : ["array", "string", "null"]}
   }
 }

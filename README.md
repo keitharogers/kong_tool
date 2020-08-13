@@ -17,7 +17,7 @@ As a result of attempting to keep compatibility between the versions, I opted to
 This has been tested with Python 3.8.
 
 ## Usage
-To get started, point this tool at Kong's admin API by editing `config.ini` to give it the correct URL to use.
+To get started, point this tool at Kong's admin API by creating and editing `config.ini` to give it the correct URL to use (see `config.ini.example`).
 
 You can list out the help documentation by running `./kongtool -h` which will give you a list of options.
 

@@ -10,6 +10,6 @@
       "connect_timeout": {"type" : "number"},
       "write_timeout": {"type" : "number"},
       "read_timeout": {"type" : "number"},
-      "tags": {"type" : ["array", "string"]}
+      "tags": {"type" : ["array", "string", "null"]}
   }
 }

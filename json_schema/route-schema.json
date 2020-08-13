@@ -6,14 +6,14 @@
       "methods": {"type" : ["array", "string"]},
       "hosts" : {"type" : ["array", "string"]},
       "paths": {"type" : ["array", "string"]},
-      "headers": {"type" : ["array", "string"]},
+      "headers": {"type" : ["array", "string", "null"]},
       "https_redirect_status_code": {"type" : "number"},
       "regex_priority": {"type" : "number"},
       "strip_path": {"type" : "boolean"},
-      "preserve_host": {"type" : "string"},
-      "snis": {"type" : ["array", "string"]},
-      "sources": {"type" : ["array", "string"]},
-      "destinations": {"type" : ["array", "string"]},
-      "tags": {"type" : ["array", "string"]}
+      "preserve_host": {"type" : "boolean"},
+      "snis": {"type" : ["array", "string", "null"]},
+      "sources": {"type" : ["array", "string", "null"]},
+      "destinations": {"type" : ["array", "string", "null"]},
+      "tags": {"type" : ["array", "string", "null"]}
   }
 }
