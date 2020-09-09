@@ -1,6 +1,8 @@
 import json
+
 from deepdiff import DeepDiff
-from jsonschema import validate
+from jsonschema import validate, exceptions
+
 from kongrequests import make_request
 
 
@@ -32,25 +34,39 @@ def create_service_endpoint(service_name, service_json_filename):
         payload = json.load(json_file)
 
     # Validate user JSON file against schema
-    validate(instance=payload, schema=schema)
+    try:
+        validate(instance=payload, schema=schema)
+    except (exceptions.ValidationError, exceptions.SchemaError) as err:
+        print(err)
+        exit(1)
 
+    # Get service by name and diff existing service and proposed service
     existing_endpoint = get_service_endpoint(service_name)
     if existing_endpoint is not None:
         ddiff = DeepDiff(existing_endpoint, payload, ignore_order=True,
                          exclude_paths=["root['id']", "root['created_at']", "root['updated_at']"])
+        if bool(ddiff) is False:
+            print('No changes, nothing to do!')
+            exit(0)
 
     if api == '/services':
         create_service = make_request('POST', api, payload)
     else:
         create_service = make_request('PUT', api, payload)
 
-    print(json.dumps(create_service, indent=2))
-    print(json.dumps(ddiff, indent=2))
+    try:
+        ddiff
+    except NameError:
+        ddiff = None
 
-    return create_service
+    if ddiff is not None:
+        print(ddiff)
+    else:
+        print(json.dumps(create_service, indent=2))
+        return create_service
 
 
-def get_service_endpoint(service_name):
+def get_service_endpoint(service_name, display_output=False):
     api = '/services/'
     payload = {}
 
@@ -58,7 +74,8 @@ def get_service_endpoint(service_name):
 
     if service_id is not None:
         service_endpoint = make_request('GET', api + service_id, payload)
-        print(json.dumps(service_endpoint, indent=2))
+        if display_output:
+            print(json.dumps(service_endpoint, indent=2))
         return service_endpoint
 
 

@@ -42,7 +42,7 @@ args = parser.parse_args()
 if args.create_service_endpoint:
     create_service_endpoint(args.create_service_endpoint[0], args.create_service_endpoint[1])
 elif args.get_service_endpoint:
-    get_service_endpoint(args.get_service_endpoint[0])
+    get_service_endpoint(args.get_service_endpoint[0], True)
 elif args.get_plugins:
     get_plugins(args.get_plugins)
 elif args.add_plugins:
