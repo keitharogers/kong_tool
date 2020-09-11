@@ -44,7 +44,7 @@ if args.create_service_endpoint:
 elif args.get_service_endpoint:
     get_service_endpoint(args.get_service_endpoint[0], True)
 elif args.get_plugins:
-    get_plugins(args.get_plugins)
+    get_plugins(args.get_plugins, True)
 elif args.add_plugins:
     add_plugins(args.add_plugins[0], args.add_plugins[1], args.add_plugins[2] if len(args.add_plugins) > 2 else None,
                 args.add_plugins[3] if len(args.add_plugins) > 3 else None,
