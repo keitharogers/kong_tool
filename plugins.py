@@ -1,10 +1,31 @@
 import json
-from jsonschema import validate
+from jsonschema import validate, exceptions
 from services import get_service_id_from_name
 from kongrequests import make_request
+from deepdiff import DeepDiff
+from version import get_kong_version
+from packaging import version
+from pprint import pprint
 
 
-def get_plugins(service_name):
+def kong_version_check():
+    kong_version = get_kong_version()
+
+    # Kong 2.1.0 changes whitelisting/blacklisting
+    # terms: https://github.com/Kong/kong/commit/6517f2adbafaa202a530b620e5fb04f33fbbf33e
+    # So compare version to change behaviour when adding an ip restriction plugin
+
+    version_comparison = version.parse(kong_version) < version.parse('2.1.0')
+
+    if version_comparison:
+        whitelist = "whitelist"
+    else:
+        whitelist = "allow"
+
+    return whitelist
+
+
+def get_plugins(service_name, display_output=False):
     service_id = get_service_id_from_name(service_name)
 
     if service_id is not None:
@@ -17,7 +38,8 @@ def get_plugins(service_name):
 
     plugins = make_request('GET', api, payload)
 
-    print(json.dumps(plugins, indent=2))
+    if display_output:
+        print(json.dumps(plugins, indent=2))
 
     return json.dumps(plugins)
 
@@ -60,15 +82,17 @@ def add_plugins(service_name, plugin_json_filename, ip_whitelist=None, ip_whitel
             with open(ip_whitelist_3) as json_file4:
                 json4_file = json.load(json_file4)
 
-        if "whitelist" in json1_file["config"] and ip_whitelist_2 is None:
-            json1_file["config"]["whitelist"].extend(json2_file["config"]["whitelist"])
-        elif "whitelist" in json1_file["config"] and ip_whitelist_3 is None:
-            json1_file["config"]["whitelist"].extend(json2_file["config"]["whitelist"])
-            json1_file["config"]["whitelist"].extend(json3_file["config"]["whitelist"])
-        elif "whitelist" in json1_file["config"] and ip_whitelist_3 is not None:
-            json1_file["config"]["whitelist"].extend(json2_file["config"]["whitelist"])
-            json1_file["config"]["whitelist"].extend(json3_file["config"]["whitelist"])
-            json1_file["config"]["whitelist"].extend(json4_file["config"]["whitelist"])
+        iprestriction_config_key = kong_version_check()
+
+        if iprestriction_config_key in json1_file["config"] and ip_whitelist_2 is None:
+            json1_file["config"][iprestriction_config_key].extend(json2_file["config"][iprestriction_config_key])
+        elif iprestriction_config_key in json1_file["config"] and ip_whitelist_3 is None:
+            json1_file["config"][iprestriction_config_key].extend(json2_file["config"][iprestriction_config_key])
+            json1_file["config"][iprestriction_config_key].extend(json3_file["config"][iprestriction_config_key])
+        elif iprestriction_config_key in json1_file["config"] and ip_whitelist_3 is not None:
+            json1_file["config"][iprestriction_config_key].extend(json2_file["config"][iprestriction_config_key])
+            json1_file["config"][iprestriction_config_key].extend(json3_file["config"][iprestriction_config_key])
+            json1_file["config"][iprestriction_config_key].extend(json4_file["config"][iprestriction_config_key])
         else:
             print("Merging of JSON plugin files only supports the IP restriction plugin...")
             exit(1)
@@ -76,7 +100,11 @@ def add_plugins(service_name, plugin_json_filename, ip_whitelist=None, ip_whitel
         payload = json1_file
 
         # Validate user JSON file against schema
-        validate(instance=payload, schema=schema)
+        try:
+            validate(instance=payload, schema=schema)
+        except (exceptions.ValidationError, exceptions.SchemaError) as err:
+            print(err)
+            exit(1)
 
     add_request = make_request('POST', api, payload)
 
@@ -98,7 +126,20 @@ def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None, ip_whitelis
             payload = json.load(json_file)
 
         # Validate user JSON file against schema
-        validate(instance=payload, schema=schema)
+        try:
+            validate(instance=payload, schema=schema)
+        except (exceptions.ValidationError, exceptions.SchemaError) as err:
+            print(err)
+            exit(1)
+
+        existing_plugin = make_request('GET', api, params=None)
+        ddiff = DeepDiff(existing_plugin, payload, ignore_order=True, report_repetition=True,
+                         exclude_paths=["root['id']", "root['created_at']", "root['service']", "root['route']",
+                                        "root['enabled']", "root['consumer']", "root['protocols']",
+                                        "root['run_on']", "root['config']['blacklist']", "root['config']['deny']"])
+        if bool(ddiff) is False:
+            print('No changes, nothing to do!')
+            exit(0)
     else:
         with open('json_schema/plugin-schema.json') as plugin_schema:
             schema = json.load(plugin_schema)
@@ -117,15 +158,17 @@ def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None, ip_whitelis
             with open(ip_whitelist_3) as json_file4:
                 json4_file = json.load(json_file4)
 
-        if "whitelist" in json1_file["config"] and ip_whitelist_2 is None:
-            json1_file["config"]["whitelist"].extend(json2_file["config"]["whitelist"])
-        elif "whitelist" in json1_file["config"] and ip_whitelist_3 is None:
-            json1_file["config"]["whitelist"].extend(json2_file["config"]["whitelist"])
-            json1_file["config"]["whitelist"].extend(json3_file["config"]["whitelist"])
-        elif "whitelist" in json1_file["config"] and ip_whitelist_3 is not None:
-            json1_file["config"]["whitelist"].extend(json2_file["config"]["whitelist"])
-            json1_file["config"]["whitelist"].extend(json3_file["config"]["whitelist"])
-            json1_file["config"]["whitelist"].extend(json4_file["config"]["whitelist"])
+        iprestriction_config_key = kong_version_check()
+
+        if iprestriction_config_key in json1_file["config"] and ip_whitelist_2 is None:
+            json1_file["config"][iprestriction_config_key].extend(json2_file["config"][iprestriction_config_key])
+        elif iprestriction_config_key in json1_file["config"] and ip_whitelist_3 is None:
+            json1_file["config"][iprestriction_config_key].extend(json2_file["config"][iprestriction_config_key])
+            json1_file["config"][iprestriction_config_key].extend(json3_file["config"][iprestriction_config_key])
+        elif iprestriction_config_key in json1_file["config"] and ip_whitelist_3 is not None:
+            json1_file["config"][iprestriction_config_key].extend(json2_file["config"][iprestriction_config_key])
+            json1_file["config"][iprestriction_config_key].extend(json3_file["config"][iprestriction_config_key])
+            json1_file["config"][iprestriction_config_key].extend(json4_file["config"][iprestriction_config_key])
         else:
             print("Merging of JSON plugin files only supports the IP restriction plugin...")
             exit(1)
@@ -133,13 +176,37 @@ def amend_plugin(plugin_id, plugin_json_filename, ip_whitelist=None, ip_whitelis
         payload = json1_file
 
         # Validate user JSON file against schema
-        validate(instance=payload, schema=schema)
+        try:
+            validate(instance=payload, schema=schema)
+        except (exceptions.ValidationError, exceptions.SchemaError) as err:
+            print(err)
+            exit(1)
+
+        if ip_whitelist is not None:
+            existing_whitelist = make_request('GET', api, params=None)
+            existing_whitelist_json = json.dumps(existing_whitelist, indent=2)
+            if "ip-restriction" in existing_whitelist_json:
+                ddiff = DeepDiff(existing_whitelist, payload, ignore_order=True, report_repetition=True,
+                                 exclude_paths=["root['id']", "root['created_at']", "root['service']", "root['route']",
+                                                "root['enabled']", "root['consumer']", "root['protocols']",
+                                                "root['run_on']", "root['config']['blacklist']",
+                                                "root['config']['deny']"])
+                if bool(ddiff) is False:
+                    print('No changes, nothing to do!')
+                    exit(0)
 
     amend_request = make_request('PATCH', api, payload)
 
-    print(json.dumps(amend_request, indent=2))
+    try:
+        ddiff
+    except NameError:
+        ddiff = None
 
-    return amend_request
+    if ddiff is not None:
+        pprint(ddiff, indent=2)
+    else:
+        print(json.dumps(amend_request, indent=2))
+        return amend_request
 
 
 def delete_plugin(plugin_id):

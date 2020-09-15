@@ -2,3 +2,4 @@ requests==2.24.0
 configparser==5.0.0
 argparse
 jsonschema==3.2.0
+deepdiff==5.0.2

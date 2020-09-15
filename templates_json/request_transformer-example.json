@@ -1,8 +1,14 @@
 {
   "name": "request-transformer",
-  "config.remove.headers": [
-    "x-toremove",
-    "x-another-one"
-  ],
-  "config.remove.querystring": "qs-old-name:qs-new-name"
+  "config": {
+    "remove": {
+      "headers": [
+        "x-toremove",
+        "x-another-one"
+      ],
+      "querystring": [
+        "qs-old-name:qs-new-name"
+      ]
+    }
+  }
 }

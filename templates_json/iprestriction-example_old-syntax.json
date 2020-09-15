@@ -1,11 +1,11 @@
 {
   "name": "ip-restriction",
   "config": {
-    "allow": [
+    "whitelist": [
       "192.0.2.0/25",
       "192.0.2.128/25"
     ],
-    "deny": null
+    "blacklist": null
   },
   "tags": [
     "test"
