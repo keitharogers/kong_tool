@@ -1,6 +1,7 @@
 import json
 
 from deepdiff import DeepDiff
+from pprint import pprint
 from jsonschema import validate, exceptions
 
 from kongrequests import make_request
@@ -60,7 +61,7 @@ def create_service_endpoint(service_name, service_json_filename):
         ddiff = None
 
     if ddiff is not None:
-        print(ddiff)
+        pprint(ddiff, indent=2)
     else:
         print(json.dumps(create_service, indent=2))
         return create_service

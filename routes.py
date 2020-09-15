@@ -1,6 +1,7 @@
 import json
 from jsonschema import validate, exceptions
 from deepdiff import DeepDiff
+from pprint import pprint
 from kongrequests import make_request
 from services import get_service_id_from_name
 
@@ -86,7 +87,7 @@ def amend_route(route_name, route_json_filename):
         ddiff = None
 
     if ddiff is not None:
-        print(ddiff)
+        pprint(ddiff, indent=2)
     else:
         print(json.dumps(create_route, indent=2))
         return create_route
