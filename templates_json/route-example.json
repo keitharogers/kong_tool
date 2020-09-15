@@ -4,10 +4,12 @@
     "example.com",
     "example2.com"
   ],
+  "destinations": null,
   "paths": [
     "/foo",
     "/bar"
   ],
+  "path_handling": "v0",
   "methods": [
     "GET",
     "POST"
@@ -16,6 +18,12 @@
   "protocols": [
     "https"
   ],
+  "https_redirect_status_code": 426,
+  "regex_priority": 0,
+  "sources": null,
+  "headers": null,
+  "preserve_host": false,
+  "snis": null,
   "tags": [
     "dev",
     "app1"

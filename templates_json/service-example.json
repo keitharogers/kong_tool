@@ -3,10 +3,17 @@
   "retries": 5,
   "protocol": "https",
   "host": "example-upstream-host",
+  "ca_certificates": null,
+  "connect_timeout": 60000,
+  "write_timeout": 60000,
+  "read_timeout": 60000,
   "port": 443,
   "path": "/foo",
+  "tls_verify": null,
+  "tls_verify_depth": null,
   "tags": [
     "dev",
     "app"
-  ]
+  ],
+  "client_certificate": null
 }
