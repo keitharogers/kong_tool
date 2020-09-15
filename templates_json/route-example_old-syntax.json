@@ -1,0 +1,30 @@
+{
+  "name": "example-route",
+  "hosts": [
+    "example.com",
+    "example2.com"
+  ],
+  "destinations": null,
+  "paths": [
+    "/foo",
+    "/bar"
+  ],
+  "methods": [
+    "GET",
+    "POST"
+  ],
+  "strip_path": true,
+  "protocols": [
+    "https"
+  ],
+  "https_redirect_status_code": 426,
+  "regex_priority": 0,
+  "sources": null,
+  "headers": null,
+  "preserve_host": false,
+  "snis": null,
+  "tags": [
+    "dev",
+    "app1"
+  ]
+}
